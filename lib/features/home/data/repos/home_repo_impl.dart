@@ -9,13 +9,16 @@ import 'home_repo.dart';
 class HomeRepoImpl implements HomeRepo {
   final Dio _dio;
 
-  const HomeRepoImpl(this._dio)
+   HomeRepoImpl(this._dio);
+
+
+
 
   @override
-  Future<Either<Errors, List<Product>>> getProducts() async {
+  Future<Either<Errors, List<Product>>> getProducts()async {
     List<Product> products = [];
     try {
-      final response = await _dio.get("https://fakestoreapi.com/");
+      final response = await _dio.get("https://fakestoreapi.com/products");
       products =
           (response.data as List).map((e) => Product.fromJson(e)).toList();
 
@@ -28,4 +31,7 @@ class HomeRepoImpl implements HomeRepo {
       }
     }
   }
+
+
+
 }

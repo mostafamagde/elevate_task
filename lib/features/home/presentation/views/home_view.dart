@@ -11,29 +11,29 @@ class HomeView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<GetProductsCubit, GetProductsState>(
-      builder: (context, state) {
-        return ModalProgressHUD(
-          inAsyncCall: state is GetProductsLoading,
-          child: Scaffold(
-            appBar: AppBar(
-              title: const Text(
-                "Home",
-                style: TextStyle(fontSize: 25, fontWeight: FontWeight.w500),
-              ),
-              centerTitle: true,
-              backgroundColor: Colors.blue,
-            ),
-            body: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                ProductListView(),
-          
-              ],
-            ),
-          ),
-        );
-      },
+    return Scaffold(
+      backgroundColor: const Color(0xFFF7FAFF),
+      appBar: AppBar(
+        title: const Text(
+          "Home",
+          style: TextStyle(fontSize: 25, fontWeight: FontWeight.w500),
+        ),
+        centerTitle: true,
+        backgroundColor: Colors.blue,
+      ),
+      body: BlocBuilder<GetProductsCubit, GetProductsState>(
+        builder: (context, state) {
+          if (state is GetProductsFailed) {
+            return Center(child: Text(state.error));
+          } else if (state is GetProductsSuccess) {
+            return ProductListView(productList: state.products);
+          } else {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+        },
+      ),
     );
   }
 }
